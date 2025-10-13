@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samsung S25 Ultra - Feedback Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 25%, #667eea 50%, #764ba2 75%, #f093fb 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            border-radius: 25px 25px 0 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .product-image {
+            width: 200px;
+            height: 300px;
+            object-fit: contain;
+            margin: 20px auto;
+            display: block;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .product-image:hover {
+            transform: scale(1.05);
+        }
+
+        .samsung-logo {
+            color: #1f4e79;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .phone-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .phone-subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            border: none;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-2px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: linear-gradient(145deg, #ffffff 0%, #f0f8ff 100%);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .star {
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s ease;
+        }
+
+        .star:hover {
+            transform: scale(1.1);
+        }
+
+        .star::before {
+            content: '★';
+            font-size: 45px;
+            color: #ddd;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .star:hover::before,
+        .star.active::before {
+            color: #ffd700;
+            filter: drop-shadow(0 4px 8px rgba(255, 215, 0, 0.3));
+        }
+
+        .star:hover ~ .star::before {
+            color: #ddd;
+        }
+
+        .star.selected {
+            animation: starPulse 0.6s ease;
+        }
+
+        @keyframes starPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1.1); }
+        }
+
+        .textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .rating-text {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+
+            .phone-title {
+                font-size: 24px;
+            }
+
+            .features {
+                gap: 10px;
+            }
+
+            .feature {
+                font-size: 11px;
+                padding: 6px 12px;
+            }
+
+            .star {
+                width: 40px;
+                height: 40px;
+            }
+
+            .star::before {
+                font-size: 40px;
+            }
+
+            .product-image {
+                width: 150px;
+                height: 225px;
+            }
+        }
+
+        .form-input:invalid {
+            border-color: #e74c3c;
+        }
+
+        .form-input:valid {
+            border-color: #27ae60;
+        }
+
+        .field-hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+            display: none;
+        }
+
+        .form-input:focus + .field-hint {
+            display: block;
+        }
+
+        .form-input.invalid + .field-hint {
+            color: #e74c3c;
+            display: block;
+        }
+
+        .form-input.valid + .field-hint {
+            color: #27ae60;
+            display: block;
+        }
+
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+            box-shadow: 0 4px 15px rgba(21, 87, 36, 0.1);
+        }
+
+        .error-message {
+            display: none;
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+            box-shadow: 0 4px 15px rgba(114, 28, 36, 0.1);
+        }
+
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .alert.show {
+            transform: translateX(0);
+        }
+
+        .alert.success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+
+        .alert.error {
+            background: linear-gradient(135deg, #dc3545, #e83e8c);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="samsung-logo">SAMSUNG</div>
+            <h1 class="phone-title">S25 Ultra</h1>
+            <p class="phone-subtitle">Share your experience with our flagship smartphone</p>
+            
+            <img src="s25.jpg" alt="Samsung S25 Ultra" class="product-image">
+            
+            <div class="features">
+                <span class="feature">Week-long Battery</span>
+                <span class="feature">IP69 Water Resistance</span>
+                <span class="feature">120x Zoom Camera</span>
+                <span class="feature">Professional Grade</span>
+            </div>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            Thank you for your feedback! Your input helps us improve our products.
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            Please fill in all required fields and select a rating.
+        </div>
+
+        <form id="feedbackForm">
+            <div class="form-group">
+                <label for="name" class="form-label">
+                    Full Name <span class="required">*</span>
+                </label>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    class="form-input" 
+                    required 
+                    placeholder="Enter your full name"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">
+                    Email Address <span class="required">*</span>
+                </label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    class="form-input" 
+                    required 
+                    placeholder="Enter your email address"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="mobile" class="form-label">
+                    Mobile Number <span class="required">*</span>
+                </label>
+                <input 
+                    type="tel" 
+                    id="mobile" 
+                    name="mobile" 
+                    class="form-input" 
+                    required 
+                    placeholder="Enter 10-digit mobile number"
+                    maxlength="10"
+                    pattern="[0-9]{10}"
+                    title="Please enter exactly 10 digits"
+                >
+                <div class="field-hint">Please enter exactly 10 digits (e.g., 9876543210)</div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    Overall Rating <span class="required">*</span>
+                </label>
+                <div class="star-rating">
+                    <div class="star" data-rating="1"></div>
+                    <div class="star" data-rating="2"></div>
+                    <div class="star" data-rating="3"></div>
+                    <div class="star" data-rating="4"></div>
+                    <div class="star" data-rating="5"></div>
+                </div>
+                <div class="rating-text" id="ratingText">Click on a star to rate</div>
+                <input type="hidden" id="rating" name="rating" required>
+            </div>
+
+            <div class="form-group">
+                <label for="feedback" class="form-label">
+                    Overall Feedback <span class="required">*</span>
+                </label>
+                <textarea 
+                    id="feedback" 
+                    name="feedback" 
+                    class="form-input textarea" 
+                    required 
+                    placeholder="Please share your detailed experience with the Samsung S25 Ultra. What did you love most? Any suggestions for improvement?"
+                ></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                Submit Feedback
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Mobile number input handling
+        const mobileInput = document.getElementById('mobile');
+        
+        // Restrict input to numbers only and limit to 10 digits
+        mobileInput.addEventListener('input', function(e) {
+            // Remove any non-numeric characters
+            let value = e.target.value.replace(/[^0-9]/g, '');
+            
+            // Limit to 10 digits
+            if (value.length > 10) {
+                value = value.slice(0, 10);
+            }
+            
+            e.target.value = value;
+            
+            // Add visual feedback for validation
+            if (value.length === 10) {
+                e.target.classList.remove('invalid');
+                e.target.classList.add('valid');
+            } else if (value.length > 0) {
+                e.target.classList.remove('valid');
+                e.target.classList.add('invalid');
+            } else {
+                e.target.classList.remove('valid', 'invalid');
+            }
+        });
+
+        // Prevent non-numeric input
+        mobileInput.addEventListener('keypress', function(e) {
+            // Allow backspace, delete, tab, escape, enter
+            if ([8, 9, 27, 13, 46].indexOf(e.keyCode) !== -1 ||
+                // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                (e.keyCode === 65 && e.ctrlKey === true) ||
+                (e.keyCode === 67 && e.ctrlKey === true) ||
+                (e.keyCode === 86 && e.ctrlKey === true) ||
+                (e.keyCode === 88 && e.ctrlKey === true)) {
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+        // Star rating functionality
+        const stars = document.querySelectorAll('.star');
+        const ratingInput = document.getElementById('rating');
+        const ratingText = document.getElementById('ratingText');
+        let currentRating = 0;
+
+        stars.forEach((star, index) => {
+            star.addEventListener('click', () => {
+                currentRating = index + 1;
+                ratingInput.value = currentRating;
+                updateStars();
+                updateRatingText();
+            });
+
+            star.addEventListener('mouseenter', () => {
+                highlightStars(index + 1);
+            });
+        });
+
+        document.querySelector('.star-rating').addEventListener('mouseleave', () => {
+            updateStars();
+        });
+
+        function updateStars() {
+            stars.forEach((star, index) => {
+                star.classList.remove('active');
+                if (index < currentRating) {
+                    star.classList.add('active');
+                }
+            });
+        }
+
+        function highlightStars(count) {
+            stars.forEach((star, index) => {
+                star.classList.remove('active');
+                if (index < count) {
+                    star.classList.add('active');
+                }
+            });
+        }
+
+        function updateRatingText() {
+            const ratings = [
+                '',
+                'Poor - 1 Star',
+                'Fair - 2 Stars',
+                'Good - 3 Stars',
+                'Very Good - 4 Stars',
+                'Excellent - 5 Stars'
+            ];
+            ratingText.textContent = ratings[currentRating] || 'Click on a star to rate';
+        }
+
+        // Form submission and validation
+        const form = document.getElementById('feedbackForm');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const submitBtn = document.querySelector('.submit-btn');
+
+        // n8n webhook URL
+        const WEBHOOK_URL = 'https://samsungj1ace807.app.n8n.cloud/webhook-test/3cdd4497-7f6a-43ca-b13c-7b481fc12493';
+        function showAlert(message, type) {
+            const alert = document.createElement('div');
+            alert.className = `alert ${type}`;
+            alert.textContent = message;
+            document.body.appendChild(alert);
+
+            setTimeout(() => {
+                alert.classList.add('show');
+            }, 100);
+
+            setTimeout(() => {
+                alert.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(alert);
+                }, 300);
+            }, 4000);
+        }
+
+        function setLoadingState(isLoading) {
+            if (isLoading) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span>⏳ Submitting...</span>';
+                submitBtn.style.opacity = '0.7';
+                submitBtn.style.cursor = 'not-allowed';
+            } else {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Submit Feedback';
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+            }
+        }
+
+        async function sendToWebhook(formData) {
+            try {
+                console.log('Sending data to webhook:', formData);
+                
+                // Add timeout to prevent hanging requests
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+                
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData),
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+
+                console.log('Webhook response status:', response.status);
+                console.log('Webhook response ok:', response.ok);
+
+                // Strict validation - only consider 200-299 status codes as success
+                if (response.status < 200 || response.status >= 300) {
+                    const errorText = await response.text();
+                    console.error('Webhook failed with status:', response.status, 'Message:', errorText);
+                    throw new Error(`Webhook failed with status ${response.status}: ${errorText || 'No response from server'}`);
+                }
+
+                // Try to parse JSON response
+                let result;
+                try {
+                    result = await response.json();
+                    console.log('Webhook response data:', result);
+                } catch (parseError) {
+                    console.log('Response is not JSON, checking if it indicates success');
+                    // If response is not JSON, check if status is success
+                    if (response.ok && response.status >= 200 && response.status < 300) {
+                        result = { message: 'Success', status: response.status };
+                    } else {
+                        throw new Error('Invalid response format from webhook');
+                    }
+                }
+
+                // Additional validation - check if the response indicates actual success
+                if (result && (result.success === false || result.error || result.status === 'error')) {
+                    throw new Error(result.error || result.message || 'Webhook returned error status');
+                }
+
+                return { success: true, data: result };
+            } catch (error) {
+                console.error('Webhook error details:', error);
+                
+                // Handle different types of errors
+                if (error.name === 'AbortError') {
+                    return { success: false, error: 'Request timeout - webhook server is not responding' };
+                } else if (error.message.includes('Failed to fetch')) {
+                    return { success: false, error: 'Network error - cannot reach webhook server' };
+                } else if (error.message.includes('CORS')) {
+                    return { success: false, error: 'CORS error - webhook server configuration issue' };
+                } else {
+                    return { success: false, error: error.message };
+                }
+            }
+        }
+
+        // Alternative webhook method using FormData
+        async function sendToWebhookAlternative(formData) {
+            try {
+                console.log('Trying alternative webhook method with FormData:', formData);
+                
+                // Convert to FormData for alternative submission
+                const formDataAlt = new FormData();
+                Object.keys(formData).forEach(key => {
+                    formDataAlt.append(key, formData[key]);
+                });
+
+                // Add timeout to alternative method too
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    body: formDataAlt,
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+
+                console.log('Alternative webhook response status:', response.status);
+                console.log('Alternative webhook response ok:', response.ok);
+
+                // Strict validation for alternative method too
+                if (response.status < 200 || response.status >= 300) {
+                    const errorText = await response.text();
+                    console.error('Alternative webhook failed with status:', response.status, 'Message:', errorText);
+                    throw new Error(`Alternative webhook failed with status ${response.status}: ${errorText || 'No response from server'}`);
+                }
+
+                // Try to parse response
+                let result;
+                try {
+                    result = await response.json();
+                } catch (parseError) {
+                    result = { message: 'Success via alternative method', status: response.status };
+                }
+
+                return { success: true, data: result };
+            } catch (error) {
+                console.error('Alternative webhook error:', error);
+                
+                // Handle different types of errors for alternative method
+                if (error.name === 'AbortError') {
+                    return { success: false, error: 'Alternative method timeout - webhook server is not responding' };
+                } else if (error.message.includes('Failed to fetch')) {
+                    return { success: false, error: 'Alternative method network error - cannot reach webhook server' };
+                } else {
+                    return { success: false, error: error.message };
+                }
+            }
+        }
+
+        // Function to check if form is valid for submission
+        function isFormValid() {
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const mobile = document.getElementById('mobile').value.trim();
+            const rating = document.getElementById('rating').value;
+            const feedback = document.getElementById('feedback').value.trim();
+
+            // Check all required fields
+            if (!name || !email || !mobile || !rating || !feedback) {
+                return false;
+            }
+
+            // Check email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                return false;
+            }
+
+            // Check mobile format (exactly 10 digits)
+            const mobileRegex = /^[0-9]{10}$/;
+            if (!mobileRegex.test(mobile)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        // Handle Enter key submission
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                // Check if the focused element is inside the form
+                const activeElement = document.activeElement;
+                if (activeElement && form.contains(activeElement)) {
+                    e.preventDefault();
+                    
+                    // Only submit if form is valid
+                    if (isFormValid()) {
+                        form.dispatchEvent(new Event('submit'));
+                    } else {
+                        showAlert('Please fill in all required fields correctly before submitting!', 'error');
+                    }
+                }
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(form);
+            const name = formData.get('name').trim();
+            const email = formData.get('email').trim();
+            const mobile = formData.get('mobile').trim();
+            const rating = formData.get('rating');
+            const feedback = formData.get('feedback').trim();
+
+            // Validation
+            if (!name || !email || !mobile || !rating || !feedback) {
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                showAlert('Please fill in all required fields and select a rating!', 'error');
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                showAlert('Please enter a valid email address!', 'error');
+                return;
+            }
+
+            // Mobile validation (exactly 10 digits)
+            const mobileRegex = /^[0-9]{10}$/;
+            if (!mobileRegex.test(mobile)) {
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                showAlert('Please enter exactly 10 digits for mobile number!', 'error');
+                return;
+            }
+
+            // Set loading state
+            setLoadingState(true);
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            // Prepare data for webhook
+            const webhookData = {
+                name: name,
+                email: email,
+                mobile: mobile,
+                rating: parseInt(rating),
+                feedback: feedback,
+                timestamp: new Date().toISOString(),
+                device: 'Samsung S25 Ultra',
+                source: 'Feedback Form'
+            };
+
+            try {
+                // Send to n8n webhook
+                const result = await sendToWebhook(webhookData);
+                
+                if (result.success) {
+                    // Success
+                    successMessage.style.display = 'block';
+                    showAlert('Feedback submitted successfully! Thank you for your input.', 'success');
+                    
+                    // Reset form only after successful submission
+                    form.reset();
+                    currentRating = 0;
+                    updateStars();
+                    updateRatingText();
+                    ratingInput.value = '';
+
+                    // Scroll to top
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    // Try alternative method if webhook fails
+                    console.log('Primary webhook failed, trying alternative method...');
+                    const altResult = await sendToWebhookAlternative(webhookData);
+                    
+                    if (altResult.success) {
+                        // Success with alternative method
+                        successMessage.style.display = 'block';
+                        showAlert('Feedback submitted successfully! Thank you for your input.', 'success');
+                        
+                        // Reset form only after successful submission
+                        form.reset();
+                        currentRating = 0;
+                        updateStars();
+                        updateRatingText();
+                        ratingInput.value = '';
+
+                        // Scroll to top
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else {
+                        // Both methods failed - keep form data
+                        errorMessage.style.display = 'block';
+                        showAlert(`Failed to submit feedback. Your data is preserved. Please try again. Error: ${result.error}`, 'error');
+                    }
+                }
+            } catch (error) {
+                // Network or other errors
+                errorMessage.style.display = 'block';
+                showAlert('Network error. Please check your connection and try again.', 'error');
+                console.error('Submission error:', error);
+            } finally {
+                // Reset loading state
+                setLoadingState(false);
+            }
+        });
+    </script>
+</body>
+</html>
